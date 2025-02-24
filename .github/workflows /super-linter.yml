@@ -18,22 +18,25 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          Rscript -e 'install.packages(c("dplyr", "zoo", "tidyr", "ggplot2", "moments", "readr", "rugarch", "nortest", "reshape2"))'
+          Rscript -e 'install.packages(c("dplyr", "zoo", "tidyr", "ggplot2", "moments", "readr", "rugarch", "nortest", "reshape2", "lintr", "rmarkdown"))'
 
       - name: Run Super Linter
         uses: github/super-linter@v5
         env:
           DEFAULT_BRANCH: main  
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-          VALIDATE_PYTHON: true  
-          VALIDATE_SQL: true  
-          VALIDATE_MARKDOWN: true  
           VALIDATE_R: true  
           VALIDATE_R_MARKDOWN: true  
-          SQL_LINT_OPTIONS: "--ignore-rules=trailing-whitespace,unrecognized-statement"
+          VALIDATE_MARKDOWN: true  
 
       - name: Lint R Scripts
         run: |
           find . -name "*.R" -print0 | while IFS= read -r -d '' script; do
             Rscript -e "lintr::lint('$script')"
+          done
+
+      - name: Lint RMarkdown Files
+        run: |
+          find . -name "*.Rmd" -print0 | while IFS= read -r -d '' rmd_file; do
+            Rscript -e "lintr::lint('$rmd_file')"
           done
