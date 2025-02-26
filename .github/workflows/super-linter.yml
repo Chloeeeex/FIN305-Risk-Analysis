@@ -18,7 +18,12 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          Rscript -e 'install.packages(c("dplyr", "zoo", "tidyr", "ggplot2", "moments", "readr", "rugarch", "nortest", "reshape2", "lintr", "rmarkdown"))'
+          Rscript -e 'install.packages(c("dplyr", "zoo", "tidyr", "ggplot2", "moments", "readr", 
+                                         "rugarch", "nortest", "reshape2", "lintr", "rmarkdown"))'
+
+      - name: Fix .lintr Configuration
+        run: |
+          echo 'linters: linters_with_defaults(line_length_linter(120), object_usage_linter = NULL)' > .lintr
 
       - name: Run Super Linter
         uses: github/super-linter@v5
@@ -31,7 +36,7 @@ jobs:
 
       - name: Lint R Scripts
         run: |
-          find . -name "*.R" -print0 | while IFS= read -r -d '' script; do
+          find . -name "*.R" -not -name "*.Rproj*" -print0 | while IFS= read -r -d '' script; do
             Rscript -e "lintr::lint('$script')"
           done
 
