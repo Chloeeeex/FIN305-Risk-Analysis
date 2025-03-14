@@ -172,3 +172,5 @@ Findings:
    - **GARCH-based VaR provides the most accurate risk estimation.**
 
 This study highlights the importance of **dynamic risk management techniques** and suggests that **GARCH-enhanced VaR models** should be incorporated into risk assessment frameworks.
+
+*The overall architecture and core logic of this code were conceived by me, with AI assisting in optimization and partial implementation.*
